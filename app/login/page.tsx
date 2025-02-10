@@ -1,3 +1,4 @@
+import LoginForm from "@/components/form/loginForm";
 import Link from "next/link";
 
 export default function Login() {
@@ -10,6 +11,7 @@ export default function Login() {
                         Listing
                     </h1>
                 </Link>
+                <LoginForm />
       </div>
         </div>
     )
