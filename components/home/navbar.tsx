@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button, buttonVariants } from "../ui/button";
 import { ModeToggle } from "./ThemeToggle";
 import { auth, signOut } from "@/app/utils/auth";
+import { UserDropdown } from "./profileDropdown";
 
 export async function Navbar(){
 
@@ -11,7 +12,7 @@ export async function Navbar(){
             <Link href="/">
                 <h1 className="text-2xl font-bold">Listing</h1>
             </Link>
-            <div className="flex items-center space-x-4">
+            {/* <div className="flex items-center space-x-4">
                 <ModeToggle />
                 {session?.user ? (<form action = {async()=>{
                     "use server"
@@ -28,7 +29,28 @@ export async function Navbar(){
                     </Link>
                 )}
             
-            </div>
+            </div> */}
+
+<div className="hidden md:flex items-center gap-5">
+        <ModeToggle />
+        <Link href="/post-job" className={buttonVariants({ size: "lg" })}>
+          Post Job
+        </Link>
+        {session?.user ? (
+          <UserDropdown
+            email={session.user.email as string}
+            name={session.user.name as string}
+            image={session.user.image as string}
+          />
+        ) : (
+          <Link
+            href="/login"
+            className={buttonVariants({ variant: "outline", size: "lg" })}
+          >
+            Login
+          </Link>
+        )}
+      </div>
         </nav>
     );
 }
