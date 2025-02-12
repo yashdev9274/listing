@@ -16,6 +16,7 @@ import { UploadDropzone } from "../home/uploadthingexported";
 import { toast } from "sonner";
 import { countryList } from "@/app/utils/countrylist";
 import { useState } from "react";
+import JobDescriptionTextEditor from "../JobDescriptionTextEditor";
 
 interface CreateJobFormProps {
     companyName: string;
@@ -193,7 +194,7 @@ async function onSubmit(values: z.infer<typeof jobSchema>) {
                 <FormItem>
                   <FormLabel>Job Description</FormLabel>
                   <FormControl>
-                    {/* <JobDescriptionEditor field={field} /> */}
+                    <JobDescriptionTextEditor  />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
