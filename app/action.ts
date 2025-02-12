@@ -1,7 +1,7 @@
 "use server"
 
 import { z } from "zod";
-import { companySchema, jobSeekerSchema } from "./utils/zodschema";
+import { companySchema, jobSchema, jobSeekerSchema } from "./utils/zodschema";
 import { prisma } from "./utils/db";
 import { auth } from "./utils/auth";
 import requireUser from "./utils/requireuser";
@@ -57,4 +57,39 @@ export async function createJobSeeker(data: z.infer<typeof jobSeekerSchema>) {
 
   return redirect("/");
 
-}
+};
+
+export async function createJob(data: z.infer<typeof jobSchema>) {
+  try {
+    const user = await requireUser();
+    const validatedData = jobSchema.parse(data);
+    console.log("Validated data:", validatedData); // Debug log
+
+    const company = await prisma.company.findUnique({
+      where: {
+        userId: user.id,
+      },
+      select: {
+        id: true,
+      }
+    });
+
+    if (!company?.id) {
+      throw new Error("Company not found");
+    }
+
+    const jobPost = await prisma.jobPost.create({
+      data: {
+        companyId: company.id,
+        jobDescription: validatedData.jobDescription,
+        jobTitle: validatedData.jobTitle,
+        employmentType: validatedData.employmentType,
+        location: validatedData.location,
+        salaryFrom: validatedData.salaryFrom,
+        salaryTo: validatedData.salaryTo,
+      }
+    });
+
+    return redirect("/");
+  } catch (error) {
+    console.error("Error creating job:", error);    throw error;  }}

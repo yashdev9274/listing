@@ -3,14 +3,10 @@ import { ModeToggle } from "@/components/home/ThemeToggle";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en" suppressHydrationWarning>
-            
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <Navbar />
-                    {/* <ModeToggle */}
-                    {children} 
-                </div>
-            
-        </html>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Navbar />
+            {/* <ModeToggle /> */}
+            {children} 
+        </div>
     );
 }

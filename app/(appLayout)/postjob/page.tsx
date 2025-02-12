@@ -1,4 +1,4 @@
-'use client'
+
 
 import { prisma } from "@/app/utils/db"
 import requireUser from "@/app/utils/requireuser"

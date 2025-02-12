@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { countryList } from "@/app/utils/countrylist";
 import { useState } from "react";
 import JobDescriptionTextEditor from "../JobDescriptionTextEditor";
+import { createJob, createJobSeeker } from "@/app/action";
 
 interface CreateJobFormProps {
     companyName: string;
@@ -42,7 +43,6 @@ export default function CreateJobForm({
     const form = useForm<z.infer<typeof jobSchema>>({
         resolver: zodResolver(jobSchema),
         defaultValues: {
-          benefits: [],
           companyDescription: companyAbout,
           companyLocation: companyLocation,
           companyName: companyName,
@@ -52,25 +52,33 @@ export default function CreateJobForm({
           jobDescription: "",
           jobTitle: "",
           location: "",
+          companyLogo: companyLogo,   
           salaryFrom: 0,
           salaryTo: 0,
-          companyLogo: companyLogo,
-          listingDuration: 30,
+           // Make sure this is included
         },
       });
 
       const [pending, setPending] = useState(false);
       async function onSubmit(values: z.infer<typeof jobSchema>) {
-        console.log("Submit Post Job form.")
+        try {
+          setPending(true);
+    
+          await createJob(values);
+        } catch {
+          toast.error("Something went wrong. Please try again.");
+        } finally {
+          setPending(false);
+        }
       }
     
     return(
         <div>
-            <Form {...form}>
+          <Form {...form}>
             <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="col-span-1   lg:col-span-2  flex flex-col gap-8"
-      >
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="col-span-1   lg:col-span-2  flex flex-col gap-8"
+            >
         <Card>
           <CardHeader>
             <CardTitle>Job Information</CardTitle>
@@ -163,36 +171,66 @@ export default function CreateJobForm({
                 )}
               />
 
-              <FormItem>
-                <FormLabel>Salary Range</FormLabel>
-                <FormControl>
-                  {/* <SalaryRangeSelector
-                    control={form.control}
-                    minSalary={30000}
-                    maxSalary={1000000}
-                  /> */}
-                </FormControl>
-                <FormMessage>
-                  {form.formState.errors.salaryFrom?.message ||
-                    form.formState.errors.salaryTo?.message}
-                </FormMessage>
-              </FormItem>
+              
             </div>
 
             <FormField
               control={form.control}
               name="jobDescription"
-              render={({ field }) => (
+              render={({field }) => (
                 <FormItem>
                   <FormLabel>Job Description</FormLabel>
                   <FormControl>
-                    <JobDescriptionTextEditor  />
+                    {/* <JobDescriptionTextEditor  /> */}
+                    <Textarea
+                    placeholder="Job Description"
+                    className="min-h-[120px]"
+                    {...field} // Spread the field properties here
+                />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
+            <div className="grid md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="salaryFrom"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Salary From</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        placeholder="Minimum Salary" 
+                        {...field}
+                        onChange={e => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="salaryTo"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Salary To</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        placeholder="Maximum Salary" 
+                        {...field}
+                        onChange={e => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             
           </CardContent>
         </Card>
@@ -376,11 +414,15 @@ export default function CreateJobForm({
           </CardContent>
         </Card>
 
-        <Button type="submit" className="w-full" disabled={pending}>
-          {pending ? "Submitting..." : "Continue"}
+        <Button 
+          type="submit" 
+          className="w-full" 
+          disabled={pending}
+        >
+          {pending ? "Submitting..." : "Create Job"}
         </Button>
       </form>
-            </Form>
+    </Form>
         </div>
     )
 }

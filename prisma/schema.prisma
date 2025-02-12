@@ -111,8 +111,6 @@ model VerificationToken {
   salaryFrom      Int
   salaryTo        Int
   jobDescription  String
-  listingDuration Int
-  benefits        String[]
 
   status       JobPostStatus @default(DRAFT)
   applications Int           @default(0)
