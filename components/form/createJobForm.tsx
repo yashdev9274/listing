@@ -60,17 +60,9 @@ export default function CreateJobForm({
       });
 
       const [pending, setPending] = useState(false);
-async function onSubmit(values: z.infer<typeof jobSchema>) {
-    try {
-      setPending(true);
-
-      // await createJob(values);
-    } catch {
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setPending(false);
-    }
-}
+      async function onSubmit(values: z.infer<typeof jobSchema>) {
+        console.log("Submit Post Job form.")
+      }
     
     return(
         <div>
@@ -201,19 +193,7 @@ async function onSubmit(values: z.infer<typeof jobSchema>) {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="benefits"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Benefits</FormLabel>
-                  <FormControl>
-                    {/* <BenefitsSelector field={field} /> */}
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            
           </CardContent>
         </Card>
 
@@ -353,13 +333,16 @@ async function onSubmit(values: z.infer<typeof jobSchema>) {
                     <div>
                       {field.value ? (
                         <div className="relative w-fit">
-                          {/* <Image
-                            src={field.value}
+                          <Image
+                            src={field.value.startsWith('http') ? field.value : '/default-company-logo.png'}
                             alt="Company Logo"
                             width={100}
                             height={100}
                             className="rounded-lg"
-                          /> */}
+                            onError={(e) => {
+                              e.currentTarget.src = '/default-company-logo.png'
+                            }}
+                          />
                           <Button
                             type="button"
                             variant="destructive"
@@ -393,28 +376,9 @@ async function onSubmit(values: z.infer<typeof jobSchema>) {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Job Listing Duration</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <FormField
-              control={form.control}
-              name="listingDuration"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    {/* <JobListingDurationSelector field={field} /> */}
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </CardContent>
-        </Card>
-        {/* <Button type="submit" className="w-full" disabled={pending}>
+        <Button type="submit" className="w-full" disabled={pending}>
           {pending ? "Submitting..." : "Continue"}
-        </Button> */}
+        </Button>
       </form>
             </Form>
         </div>
