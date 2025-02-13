@@ -1,3 +1,10 @@
+# CreateXP
+
+## Assignment overview- explained through pictorial diagram:
+
+![alt text](Listing_excalidraw.png)
+
+
 # Job Listing Platform
 
 A modern job listing platform built with Next.js 14, featuring a clean UI and powerful filtering capabilities.
