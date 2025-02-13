@@ -1,9 +1,28 @@
 # CreateXP
 
-## Assignment overview- explained through pictorial diagram:
+## Assignment Overview - Platform Architecture
 
-![alt text](Listing_excalidraw.png)
+![Job Listing Platform Overview](/public/Listing_excalidraw.png)
 
+<br>
+
+### Database model structure
+
+![Job Listing Platform Overview](/public/DB-structure.jpg)
+
+
+
+### Diagram Components:
+1. **User Flow**
+   - Job Seeker Path
+   - Company Path
+   - Authentication Flow
+
+2. **Core Features**
+   - Job Posting System
+   - Search & Filter
+   - Company Profiles
+   - Real-time Updates
 
 # Job Listing Platform
 
@@ -114,9 +133,7 @@ A modern job listing platform built with Next.js 14, featuring a clean UI and po
 - Company profile integration
 - Image upload for company logos
 - Form validation using Zod
-
-### Company Profiles
-- Detailed company information
+### Company Profiles- Detailed company information
 - Logo management
 - Job posting management
 
