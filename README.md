@@ -1,6 +1,5 @@
-# CreateXP
 
-## Assignment Overview - Platform Architecture
+## Listing
 
 ![Job Listing Platform Overview](/public/Listing_excalidraw.png)
 
